@@ -62,7 +62,6 @@ jobs:
         run: uv run mypy app
 
       # 8. Run Migrations (Verify Alembic works)
-      # We override the DB URL to point to the CI Service container
       - name: Run Migrations Check
         run: uv run alembic upgrade head
         env:
@@ -71,7 +70,10 @@ jobs:
           POSTGRES_PASSWORD: password
           POSTGRES_DB: test_db
           POSTGRES_PORT: 5432
+          # MISSING VAR ADDED HERE:
+          REDIS_HOST: localhost
           LLM_API_KEY: "mock-key-ci"
+
 
       # 9. Run Tests
       # (Note: tests might fail if empty, so we can make it permissive or ensure we have at least one test)
