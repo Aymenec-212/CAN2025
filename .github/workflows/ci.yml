@@ -2,9 +2,9 @@ name: CI Pipeline
 
 on:
   push:
-    branches: ["main"]
+    branches: [ main ]
   pull_request:
-    branches: ["main"]
+    branches: [ main, "feat/*", "fix/*" ]
 
 jobs:
   quality:
@@ -12,60 +12,75 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
+      # 1. Postgres Service
       postgres:
-        image: postgres:16
+        image: postgres:15
         env:
-          POSTGRES_USER: user
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_DB: test_db
         ports:
           - 5432:5432
+        # Health check to ensure DB is ready before steps run
         options: >-
-          --health-cmd="pg_isready -U user -d test_db"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
+      # 2. Redis Service
       redis:
         image: redis:7
         ports:
           - 6379:6379
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
+      # 3. Setup uv (The Astral tool)
       - name: Install uv
         uses: astral-sh/setup-uv@v2
         with:
-          version: "latest"
+          enable-cache: true
+          cache-suffix: "py3.11" # Optional: distinct cache per python version
 
+      # 4. Setup Python via uv
+      - name: Set up Python
+        run: uv python install 3.11
+
+      # 5. Install Dependencies (The Fix!)
+      # This reads uv.lock/pyproject.toml and installs everything properly
       - name: Install dependencies
-        run: |
-          uv pip install -r requirements.txt
+        run: uv sync --all-extras --dev
 
+      # 6. Linting
       - name: Lint with Ruff
-        run: |
-          uv run ruff check .
+        run: uv run ruff check .
 
-      - name: Type check with mypy
-        run: |
-          uv run mypy app
+      # 7. Type Checking
+      - name: Type check with Mypy
+        run: uv run mypy app
 
-      - name: Run tests
-        run: |
-          uv run pytest
+      # 8. Run Migrations (Verify Alembic works)
+      # We override the DB URL to point to the CI Service container
+      - name: Run Migrations Check
+        run: uv run alembic upgrade head
         env:
           POSTGRES_SERVER: localhost
-          POSTGRES_USER: user
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_DB: test_db
           POSTGRES_PORT: 5432
+          LLM_API_KEY: "mock-key-ci"
+
+      # 9. Run Tests
+      # (Note: tests might fail if empty, so we can make it permissive or ensure we have at least one test)
+      - name: Run Tests
+        run: uv run pytest
+        env:
+          POSTGRES_SERVER: localhost
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: test_db
           REDIS_HOST: localhost
-          REDIS_PORT: 6379
-          LLM_API_KEY: "mock-key"
+          LLM_API_KEY: "mock-key-ci"
