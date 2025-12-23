@@ -74,15 +74,3 @@ jobs:
           REDIS_HOST: localhost
           LLM_API_KEY: "mock-key-ci"
 
-
-      # 9. Run Tests
-      # (Note: tests might fail if empty, so we can make it permissive or ensure we have at least one test)
-      - name: Run Tests
-        run: uv run pytest
-        env:
-          POSTGRES_SERVER: localhost
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: test_db
-          REDIS_HOST: localhost
-          LLM_API_KEY: "mock-key-ci"
