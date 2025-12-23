@@ -1,0 +1,45 @@
+services:
+  # ----------------------------------------
+  # 1. Database (PostgreSQL 15)
+  # ----------------------------------------
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      # These variables control the creation of the default DB inside the container
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: can2025
+    ports:
+      # Map Host Port 5432 -> Container Port 5432
+      # This allows your local PyCharm/Alembic to connect via "localhost:5432"
+      - "5432:5432"
+    volumes:
+      # Persist data so it doesn't vanish when you stop Docker
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d can2025"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ----------------------------------------
+  # 2. Cache (Redis 7)
+  # ----------------------------------------
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      # Map Host Port 6379 -> Container Port 6379
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:
