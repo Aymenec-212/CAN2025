@@ -1,7 +1,7 @@
 # app/services/schedule_service.py
 import json
 from datetime import datetime, timezone
-from typing import List, Optional
+from typing import List
 
 from redis.asyncio import Redis
 from sqlalchemy import select, or_
