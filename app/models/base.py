@@ -24,6 +24,4 @@ class Base(DeclarativeBase):
     metadata = MetaData(naming_convention=POSTGRES_NAMING_CONVENTION)
     id: Any
 
-    @declared_attr
-    def __tablename__(cls) -> str:  # type: ignore[override]
-        return cls.__name__.lower()
+

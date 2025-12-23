@@ -10,7 +10,7 @@ from app.core.config import settings
 # 1. Load Config & Models
 
 # Import all models to ensure metadata is registered
-from app.models import *
+from app.models import Base
 
 config = context.config
 
