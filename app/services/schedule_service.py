@@ -53,7 +53,7 @@ class ScheduleService:
                 selectinload(Match.team2),
                 selectinload(Match.stadium),
             )
-            .where(Match.status == "SCHEDULED")
+            .where(Match.status.in_(["SCHEDULED", "DELAYED"]))
             .where(Match.kickoff_time >= now_utc)
             .order_by(Match.kickoff_time.asc())
             .limit(limit)
