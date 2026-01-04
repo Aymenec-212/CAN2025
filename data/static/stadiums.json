@@ -1,0 +1,83 @@
+[
+  {
+    "name": "Adrar Stadium",
+    "city": "Agadir",
+    "capacity": 45000,
+    "latitude": 30.428228337434188,
+    "longitude": -9.546230984577726,
+    "amenities": {},
+    "image_urls": ["https://www.cafonline.com/media/iacdxy0c/new_agadir_grand-stade-d-agadir.jpg"]
+  },
+  {
+    "name": "Stade Mohammed V",
+    "city": "Casablanca",
+    "capacity": 45000,
+    "latitude": 33.58203007763613,
+    "longitude": -7.644441547804639,
+    "amenities": {},
+    "image_urls": ["https://www.cafonline.com/media/zx5er4em/b25lvdl0147.jpg"]
+  },
+  {
+    "name": "Fez Stadium",
+    "city": "Fez",
+    "capacity": 45000,
+    "latitude": 34.002902319858535,
+    "longitude": -4.968924902204022,
+    "amenities": {},
+    "image_urls": ["https://upload.wikimedia.org/wikipedia/commons/7/75/Stade-fez.png"]
+  },
+  {
+    "name": "Marrakesh Stadium",
+    "city": "Marrakech",
+    "capacity": 45000,
+    "latitude": 31.70718513748317,
+    "longitude": -7.980324488766393,
+    "amenities": {},
+    "image_urls": ["https://afrikacup2025.nl/wp-content/uploads/2025/08/grand-marrakech.jpeg"]
+  },
+  {
+    "name": "Prince Moulay Abdellah Stadium",
+    "city": "Rabat",
+    "capacity": 69500,
+    "latitude": 33.96003549880157,
+    "longitude": -6.889090718968214,
+    "amenities": {},
+    "image_urls": ["https://www.cafonline.com/media/1q3p4e13/b25iefrm0951.jpg"]
+  },
+  {
+    "name": "Moulay Hassan Stadium",
+    "city": "Rabat",
+    "capacity": 22000,
+    "latitude": 33.97600306905887,
+    "longitude": -6.82385708019666,
+    "amenities": {},
+    "image_urls": ["https://www.cafonline.com/media/efsjavli/b25kpnr1401.jpg"]
+  },
+  {
+    "name": "Rabat Olympic Stadium",
+    "city": "Rabat",
+    "capacity": 21000,
+    "latitude": 33.95709666511252,
+    "longitude": -6.890965932478304,
+    "amenities": {},
+    "image_urls": ["https://afrikacup2025.nl/wp-content/uploads/2025/08/stade-olympique-de-rabat.jpg"]
+  },
+  {
+    "name": "Al Medina Stadium",
+    "city": "Rabat",
+    "capacity": 18000,
+    "latitude": 34.0053142543917,
+    "longitude": -6.845047332476276,
+    "amenities": {},
+    "image_urls": ["https://www.cafonline.com/media/ctzp5cej/b25kmnr1221.jpg"]
+  },
+  {
+    "name": "Tangier Grand Stadium",
+    "city": "Tanger",
+    "capacity": 75000,
+    "latitude": 35.741342473650526,
+    "longitude": -5.858051150002041,
+    "amenities": {},
+    "image_urls": ["https://www.cafonline.com/media/brpfuxd5/tangiers-stadium2.jpg"]
+  }
+]

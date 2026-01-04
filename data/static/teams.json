@@ -1,0 +1,194 @@
+[
+  {
+    "code": "MAR",
+    "name": "Morocco",
+    "group": "A",
+    "coach_name": "Walid Regragui",
+    "flag_url": "https://flagcdn.com/ma.svg",
+    "fifa_ranking": 11
+  },
+  {
+    "code": "MLI",
+    "name": "Mali",
+    "group": "A",
+    "coach_name": "Tom Saintfiet",
+    "flag_url": "https://flagcdn.com/ml.svg",
+    "fifa_ranking": 53
+  },
+  {
+    "code": "ZAM",
+    "name": "Zambia",
+    "group": "A",
+    "coach_name": "Avram Grant",
+    "flag_url": "https://flagcdn.com/zm.svg",
+    "fifa_ranking": 91
+  },
+  {
+    "code": "COM",
+    "name": "Comoros",
+    "group": "A",
+    "coach_name": "Abdoulhalim Razzagui",
+    "flag_url": "https://flagcdn.com/km.svg",
+    "fifa_ranking": 109
+  },
+  {
+    "code": "EGY",
+    "name": "Egypt",
+    "group": "B",
+    "coach_name": "Hossam Hassan",
+    "flag_url": "https://flagcdn.com/eg.svg",
+    "fifa_ranking": 35
+  },
+  {
+    "code": "RSA",
+    "name": "South Africa",
+    "group": "B",
+    "coach_name": "Broos Hugo",
+    "flag_url": "https://flagcdn.com/za.svg",
+    "fifa_ranking": 61
+  },
+  {
+    "code": "ANG",
+    "name": "Angola",
+    "group": "B",
+    "coach_name": "Pedro Gonçalves",
+    "flag_url": "https://flagcdn.com/ao.svg",
+    "fifa_ranking": 89
+  },
+  {
+    "code": "ZIM",
+    "name": "Zimbabwe",
+    "group": "B",
+    "coach_name": "Jairos Tapera",
+    "flag_url": "https://flagcdn.com/zw.svg",
+    "fifa_ranking": 129
+  },
+  {
+    "code": "NGA",
+    "name": "Nigeria",
+    "group": "C",
+    "coach_name": "Austin Eguavoen",
+    "flag_url": "https://flagcdn.com/ng.svg",
+    "fifa_ranking": 38
+  },
+  {
+    "code": "TUN",
+    "name": "Tunisia",
+    "group": "C",
+    "coach_name": "Jalel Kadri",
+    "flag_url": "https://flagcdn.com/tn.svg",
+    "fifa_ranking": 41
+  },
+  {
+    "code": "UGA",
+    "name": "Uganda",
+    "group": "C",
+    "coach_name": "Paul Put",
+    "flag_url": "https://flagcdn.com/ug.svg",
+    "fifa_ranking": 85
+  },
+  {
+    "code": "TAN",
+    "name": "Tanzania",
+    "group": "C",
+    "coach_name": "Adel Amrouche",
+    "flag_url": "https://flagcdn.com/tz.svg",
+    "fifa_ranking": 112
+  },
+  {
+    "code": "SEN",
+    "name": "Senegal",
+    "group": "D",
+    "coach_name": "Pape Thiaw",
+    "flag_url": "https://flagcdn.com/sn.svg",
+    "fifa_ranking": 19
+  },
+  {
+    "code": "COD",
+    "name": "DR Congo",
+    "group": "D",
+    "coach_name": "Sébastien Desabre",
+    "flag_url": "https://flagcdn.com/cd.svg",
+    "fifa_ranking": 56
+  },
+  {
+    "code": "BEN",
+    "name": "Benin",
+    "group": "D",
+    "coach_name": "Gernot Rohr",
+    "flag_url": "https://flagcdn.com/bj.svg",
+    "fifa_ranking": 92
+  },
+  {
+    "code": "BOT",
+    "name": "Botswana",
+    "group": "D",
+    "coach_name": "Mogomotsi Mpote",
+    "flag_url": "https://flagcdn.com/bw.svg",
+    "fifa_ranking": 138
+  },
+  {
+    "code": "ALG",
+    "name": "Algeria",
+    "group": "E",
+    "coach_name": "Vladimir Petković",
+    "flag_url": "https://flagcdn.com/dz.svg",
+    "fifa_ranking": 34
+  },
+  {
+    "code": "BFA",
+    "name": "Burkina Faso",
+    "group": "E",
+    "coach_name": "Omar Traoré",
+    "flag_url": "https://flagcdn.com/bf.svg",
+    "fifa_ranking": 62
+  },
+  {
+    "code": "SDN",
+    "name": "Sudan",
+    "group": "E",
+    "coach_name": "James Kwesi Appiah",
+    "flag_url": "https://flagcdn.com/sd.svg",
+    "fifa_ranking": 117
+  },
+  {
+    "code": "EQG",
+    "name": "Equatorial Guinea",
+    "group": "E",
+    "coach_name": "Juan Micha",
+    "flag_url": "https://flagcdn.com/gq.svg",
+    "fifa_ranking": 97
+  },
+  {
+    "code": "CIV",
+    "name": "Ivory Coast",
+    "group": "F",
+    "coach_name": "Emerse Faé",
+    "flag_url": "https://flagcdn.com/ci.svg",
+    "fifa_ranking": 42
+  },
+  {
+    "code": "CMR",
+    "name": "Cameroon",
+    "group": "F",
+    "coach_name": "Bryce Moon",
+    "flag_url": "https://flagcdn.com/cm.svg",
+    "fifa_ranking": 57
+  },
+  {
+    "code": "GAB",
+    "name": "Gabon",
+    "group": "F",
+    "coach_name": "Patrice Neveu",
+    "flag_url": "https://flagcdn.com/ga.svg",
+    "fifa_ranking": 78
+  },
+  {
+    "code": "MOZ",
+    "name": "Mozambique",
+    "group": "F",
+    "coach_name": "Chiquinho Conde",
+    "flag_url": "https://flagcdn.com/mz.svg",
+    "fifa_ranking": 102
+  }
+]

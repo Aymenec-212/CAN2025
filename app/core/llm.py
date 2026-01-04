@@ -37,7 +37,7 @@ class LLMGateway:
         messages: List[Dict[str, str]],
         model_type: ModelType = "fast",
         stream: bool = False,
-        temperature: float = 0.0,
+        temperature: float = 1,
         max_tokens: Optional[int] = None,
         tools: Optional[List[Dict[str, Any]]] = None,
         tool_choice: Optional[Union[str, Dict[str, Any]]] = "auto",

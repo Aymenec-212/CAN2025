@@ -1,64 +1,42 @@
 # app/integrations/match_validation_source.py
 
-from datetime import datetime, timezone, timedelta
-from typing import Optional, List, Dict, Any, cast
+from __future__ import annotations
 
+from typing import cast
+
+from datetime import datetime
+
+from app.integrations.google_search import google_search_client
+from app.integrations.match_truth_parser import parse_match_truth
 from app.models.schedule import Match
 from app.schemas.validation import MatchExternalSnapshot
 
 
 async def fetch_match_truth(match: Match) -> MatchExternalSnapshot:
     """
-    Stub implementation.
-
-    In a future phase:
-      - This will call external sources (Google / official API) and build a real snapshot.
-
-    For now:
-      - We mostly echo the DB state.
-      - For demo purposes, if match.id == 3 and status == "SCHEDULED",
-        we simulate a 1-hour delay and mark it as DELAYED.
+    Real implementation using Google Search + conservative heuristics.
     """
 
-    # Explicit local types (Python values, not Column objects)
-    status: str = str(match.status)
-    kickoff: datetime = cast(datetime, match.kickoff_time)
-    team1_score: Optional[int] = cast(Optional[int], match.team1_score)
-    team2_score: Optional[int] = cast(Optional[int], match.team2_score)
+    # Names for query enrichment (cast to satisfy mypy + SQLAlchemy Column typing)
+    t1_name = cast(str, match.team1.name)
+    t2_name = cast(str, match.team2.name)
 
-    sources: List[Dict[str, Any]] = [
-        {
-            "name": "Simulated Stub",
-            "fetched_at": datetime.now(timezone.utc).isoformat(),
-        }
-    ]
+    city = "Morocco"
+    if match.stadium is not None:
+        city = cast(str, match.stadium.city)
 
-    # --- SIMULATED CHANGE: Delay match 3 by 1 hour ---
-    if match.id == 3 and status == "SCHEDULED":
-        status = "DELAYED"
-        kickoff = kickoff + timedelta(hours=1)
-        sources.append(
-            {
-                "name": "Breaking News",
-                "snippet": "Match delayed due to traffic (simulated).",
-            }
-        )
-    # --------------------------------------------------
+    date_str = cast(datetime, match.kickoff_time).strftime("%d %b %Y")
 
-    stadium_name: Optional[str] = (
-        str(match.stadium.name) if match.stadium is not None else None
+    query = f"{t1_name} vs {t2_name} match status {date_str} {city} CAN 2025"
+
+    results = await google_search_client.search(query)
+
+    snapshot = parse_match_truth(
+        team1=cast(str, match.team1.code),
+        team2=cast(str, match.team2.code),
+        current_status=cast(str, match.status),
+        current_kickoff_time=cast(datetime, match.kickoff_time),
+        search_results=results,
     )
 
-    return MatchExternalSnapshot(
-        tournament_id=str(match.tournament_id),
-        team1_code=str(match.team1.code) if match.team1 is not None else "UNK",
-        team2_code=str(match.team2.code) if match.team2 is not None else "UNK",
-        stadium_name=stadium_name,
-        status=status,
-        kickoff_time=kickoff,
-        team1_score=team1_score,
-        team2_score=team2_score,
-        sources=sources,
-        confidence=0.95,
-        raw_payload=None,
-    )
+    return snapshot

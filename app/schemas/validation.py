@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 from app.schemas.commons import BaseSchema
+from app.schemas.schedule import MatchDTO
 from pydantic import Field
 
 
@@ -25,3 +26,19 @@ class MatchExternalSnapshot(BaseSchema):
     sources: List[Dict[str, Any]] = Field(default_factory=list)
     confidence: float = 1.0
     raw_payload: Optional[Dict[str, Any]] = None
+
+
+class ValidationChange(BaseSchema):
+    field: str
+    old_value: str
+    new_value: str
+
+class MatchValidationResultDTO(BaseSchema):
+    """
+    What the tool should return to the agent/UI.
+    This is the *validation* output, not just the DB match row.
+    """
+    match: MatchDTO
+    snapshot: MatchExternalSnapshot
+    checked_at: datetime
+    changes: List[ValidationChange] = Field(default_factory=list)

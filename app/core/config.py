@@ -38,8 +38,8 @@ class Settings(BaseSettings):
     # LLM_MODEL_FAST: For intent classification / routing
     # LLM_MODEL_SMART: For complex reasoning / RAG
     LLM_API_KEY: str
-    LLM_MODEL_FAST: str = "gpt-3.5-turbo"
-    LLM_MODEL_SMART: str = "gpt-4-turbo-preview"
+    LLM_MODEL_FAST: str = "gpt-5-nano"
+    LLM_MODEL_SMART: str = "gpt-5-nano"
 
     # --- External Services ---
     GOOGLE_MAPS_API_KEY: Optional[str] = None

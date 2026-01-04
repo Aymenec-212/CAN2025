@@ -3,6 +3,7 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.models.base import Base
+from sqlalchemy import UniqueConstraint
 
 
 class Match(Base):
@@ -15,6 +16,8 @@ class Match(Base):
     team1_id = Column(Integer, ForeignKey("teams.id"), nullable=False, index=True)
     team2_id = Column(Integer, ForeignKey("teams.id"), nullable=False, index=True)
     stadium_id = Column(Integer, ForeignKey("stadiums.id"), nullable=True, index=True)
+    uid = Column(String, nullable=False, unique=True, index=True)
+    group = Column(String(1), nullable=True, index=True)
 
     # Relationships for Eager Loading
     team1 = relationship("Team", foreign_keys=[team1_id], lazy="joined")
@@ -36,6 +39,9 @@ class Match(Base):
     # Validation Metadata
     last_validated_at = Column(DateTime(timezone=True), server_default=func.now())
     validation_confidence = Column(Float, default=1.0)
+    __table_args__ = (
+        UniqueConstraint("uid", name="uq_matches_uid"),
+    )
 
 
 class ValidationRecord(Base):

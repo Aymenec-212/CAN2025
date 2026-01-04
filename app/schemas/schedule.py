@@ -9,9 +9,11 @@ from app.schemas.static import TeamDTO, StadiumDTO
 
 class MatchDTO(BaseSchema):
     id: int
+    uid: str  # ✅ add
     tournament_id: str
 
     stage: str
+    group: Optional[str] = None # ✅ add
     status: str
 
     kickoff_time: datetime

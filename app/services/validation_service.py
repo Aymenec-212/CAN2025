@@ -1,5 +1,6 @@
+# services/validation_service.py
 from datetime import datetime, timezone
-from typing import Any
+from typing import Any, List
 
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
@@ -8,6 +9,7 @@ from redis.asyncio import Redis
 
 from app.models.schedule import Match, ValidationRecord
 from app.schemas.schedule import MatchDTO
+from app.schemas.validation import MatchValidationResultDTO, ValidationChange, MatchExternalSnapshot
 from app.services.schedule_service import ScheduleService
 from app.integrations.match_validation_source import fetch_match_truth
 
@@ -18,36 +20,33 @@ class ValidationService:
         self.redis = redis
         self.schedule_service = ScheduleService(db, redis)
 
-    async def validate_match(self, match_id: int) -> MatchDTO:
-        # 1. Load Match with relationships needed for the Stub (team codes)
+    async def validate_match(self, match_id: int) -> MatchValidationResultDTO:
+        # 1) Load match with relationships needed for query enrichment
         query = (
             select(Match)
             .options(
                 selectinload(Match.team1),
                 selectinload(Match.team2),
-                selectinload(Match.stadium)
+                selectinload(Match.stadium),
             )
             .where(Match.id == match_id)
         )
         result = await self.db.execute(query)
         match = result.scalar_one_or_none()
-
         if not match:
             raise ValueError(f"Match ID {match_id} not found.")
 
-        # 2. Fetch External Truth
-        snapshot = await fetch_match_truth(match)
+        # 2) Fetch external snapshot (Google Search evidence)
+        snapshot: MatchExternalSnapshot = await fetch_match_truth(match)
 
-        # 3. Detect Changes
-        changes = []
+        # 3) Detect changes (conservative)
+        changes: List[ValidationChange] = []
 
-        # Helper to normalize values for comparison
         def normalize(val: Any) -> str:
             if isinstance(val, datetime):
                 return val.isoformat()
             return str(val) if val is not None else "null"
 
-        # Fields to check
         checks = [
             ("status", match.status, snapshot.status),
             ("kickoff_time", match.kickoff_time, snapshot.kickoff_time),
@@ -56,41 +55,44 @@ class ValidationService:
         ]
 
         for field, current, new in checks:
-            # Simple equality check
             if current != new:
-                changes.append((field, normalize(current), normalize(new)))
-                # Apply update to DB object immediately
+                changes.append(
+                    ValidationChange(field=field, old_value=normalize(current), new_value=normalize(new))
+                )
                 setattr(match, field, new)
 
-        # 4. Apply Logic
+        # 4) Update validation metadata (internal)
         now = datetime.now(timezone.utc)
-        match.last_validated_at = now # type: ignore[assignment]
-        match.validation_confidence = snapshot.confidence # type: ignore[assignment]
+        match.last_validated_at = now  # type: ignore[assignment]
+        match.validation_confidence = float(snapshot.confidence or 0.0)  # type: ignore[assignment]
 
-        # 4. Create audit logs if there are changes
+        # 5) Write audit logs only when we changed canonical fields
         if changes:
-            for field, old, new_val in changes:
+            for c in changes:
                 record = ValidationRecord(
                     entity_type="match",
                     entity_id=match.id,
                     checked_at=now,
-                    sources=snapshot.sources,
-                    field_changed=field,
-                    old_value=old,
-                    new_value=new_val,
-                    agent_reasoning="Auto-validation via ValidationService (stub source)."
+                    sources=snapshot.sources,  # ✅ store evidence used
+                    field_changed=c.field,
+                    old_value=c.old_value,
+                    new_value=c.new_value,
+                    agent_reasoning="Auto-validation via ValidationService (Google Search snapshot).",
                 )
                 self.db.add(record)
 
-        # 5. Commit DB changes first
+        # 6) Commit
         await self.db.commit()
         await self.db.refresh(match)
 
-        # 6. Then handle cache + logging based on final persisted state
+        # 7) Invalidate schedule cache only if canonical fields changed
         if changes:
             await self.schedule_service.invalidate_cache()
-            print(f"Match {match_id} updated. {len(changes)} changes detected.")
-        else:
-            print(f"Match {match_id} validated. No changes.")
 
-        return MatchDTO.model_validate(match)
+        # 8) Return full validation payload to UI
+        return MatchValidationResultDTO(
+            match=MatchDTO.model_validate(match),
+            snapshot=snapshot,
+            checked_at=now,
+            changes=changes,
+        )
