@@ -1,3 +1,7 @@
+
+
+
+
 # CAN2025 Assistant — Multi-Agent Football & Logistics Assistant (AFCON 2025 Morocco)
 
 A production-oriented, multilingual (EN/FR/AR) assistant for **AFCON/CAN 2025 in Morocco**.  
@@ -67,6 +71,10 @@ Markdown-rich output (emoji flags, clean sections, Maps links). Internal DB IDs 
 - **Google Search API (CSE)**: external verifier and news provider
 - **LLM**: intent routing + response formatting only
 
+## Démo 
+https://github.com/user-attachments/assets/ef3d809c-3ba1-4c4b-86df-90e986dda787
+
+
 ### Agent Graph (LangGraph)
 ```mermaid
 flowchart TD
@@ -89,3 +97,4 @@ flowchart TD
   FZ --> END
   NW --> END
   CC --> END
+
